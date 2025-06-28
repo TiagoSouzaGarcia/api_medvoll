@@ -1,6 +1,7 @@
 package med.voll.api_medvoll.controller;
 
 import jakarta.validation.Valid;
+import med.voll.api_medvoll.paciente.DadosAtualizacaoPaciente;
 import med.voll.api_medvoll.paciente.DadosCadastroPaciente;
 import med.voll.api_medvoll.paciente.DadosListagemPaciente;
 import med.voll.api_medvoll.paciente.Paciente;
@@ -26,7 +27,21 @@ public class PacienteController {
     }
 
     @GetMapping
-    public Page<DadosListagemPaciente> list(@PageableDefault(size = 10, sort = "nome")Pageable page) {
-        return repository.findAll(page).map(DadosListagemPaciente::new);
+    public Page<DadosListagemPaciente> listar(@PageableDefault(page = 0, size = 10, sort = { "nome" }) Pageable paginacao) {
+        return repository.findAllByAtivoTrue(paginacao).map(DadosListagemPaciente::new);
+    }
+
+    @PutMapping
+    @Transactional
+    public void atualizar(@RequestBody @Valid DadosAtualizacaoPaciente dados) {
+        var paciente = repository.getReferenceById(dados.id());
+        paciente.atualizarInformacoes(dados);
+    }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public void remover(@PathVariable Long id) {
+        var paciente = repository.getReferenceById(id);
+        paciente.inativar();
     }
 }

@@ -2,7 +2,10 @@ package med.voll.api_medvoll.medico;
 
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import med.voll.api_medvoll.endereco.Endereco;
 
 
